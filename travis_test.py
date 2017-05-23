@@ -19,20 +19,24 @@ class TestTasks:
 
     def run(self):
         self.test_math1()
-        self.test_math2()
-        self.test_math3()
         self.test_mention()
-        self.test_over9000()
-        self.test_oh_rly()
 
         self.test_pokemon1()
         self.test_pokemon2()
+        self.test_math2()
+
         self.test_pokemon3()
         self.test_pokemon4()
+        self.test_math3()
+
         self.test_pokemon5()
         self.test_pokemon6()
+        self.test_over9000()
+
         self.test_pokemon7()
         self.test_pokemon8()
+        self.test_oh_rly()
+
         self.test_pokemon9()
         self.test_poke_math1()
 
