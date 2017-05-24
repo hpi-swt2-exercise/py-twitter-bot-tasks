@@ -6,6 +6,7 @@ from travis.submit_issue import submit_issue
 from sys import exit
 import traceback
 import os
+import random
 
 # The basic building blocks of unit testing are test cases
 # single scenarios that must be set up and checked for correctness.
@@ -22,21 +23,21 @@ class TestTasks:
         self.test_mention()
 
         self.test_pokemon1()
-        self.test_pokemon2()
         self.test_math2()
 
-        self.test_pokemon3()
-        self.test_pokemon4()
+        self.test_pokemon2()
         self.test_math3()
+        self.test_oh_rly()
+
+        self.test_pokemon3()
+        self.test_mathX()
+        self.test_pokemon4()
+        self.test_over9000()
 
         self.test_pokemon5()
         self.test_pokemon6()
-        self.test_over9000()
-
         self.test_pokemon7()
         self.test_pokemon8()
-        self.test_oh_rly()
-
         self.test_pokemon9()
         self.test_poke_math1()
 
@@ -76,8 +77,19 @@ class TestTasks:
 Given a tweet \"1+1\",
 Then the bot's answer should contain \"2\".
 
-* To split the term into operands, you can use [`string.split('+')`](https://docs.python.org/2/library/stdtypes.html#str.split).
-* To convert a  string to an integer, you can use [`int(string)`](https://docs.python.org/2/library/functions.html#int).
+### Hints
+1. You got a feature request! Implement a test that reproduces this requirement
+   * On your machine, open `test.py` in the IDLE
+   * This is what the test could look like: 
+      <pre>def test_math1(self):
+        response = reply({'text': '1+1', 'user': {'screen_name': 'TestUser'}})
+        self.assertTrue("2" in response)</pre>
+   * Make sure to have `from tweet_text import idle_text, reply` at the top of the file
+2. Run the test file locally
+   * You should get a report with one failing test
+3. Implement the feature in your `tweet_text.py`
+   * To get started, what is the easiest solution you can think of?
+4. When the test passes, commit and push your changes
         """)
         try:
             response = self.reply_to("1+1")
@@ -93,6 +105,15 @@ Then the bot's answer should contain \"2\".
         """
 Given a tweet \"1+2\",
 Then the bot's answer should contain \"3\".
+
+### Hints
+* To split the term into operands, you can use [`myString.split('+')`](https://docs.python.org/2/library/stdtypes.html#str.split), where `myString` is a variable containing your string.
+* `split` returns an array, here is a small example
+  <pre>myString = "1+2"
+  arguments = myString.split('+')
+  print arguments[0] #(prints '1')
+  print arguments[1] #(prints '2')</pre>
+* To convert a  string to an integer, you can use [`int(myString)`](https://docs.python.org/2/library/functions.html#int).
         """)
         try:
             response = self.reply_to("1+2")
@@ -112,6 +133,32 @@ Then the bot's answer should contain \"2000\".
         try:
             response = self.reply_to("1999+1")
             self.expect_contains("response", response, "2000")
+        except SystemExit:
+            exit(1)
+        except Exception as ex:
+            self.expect_no_error(traceback.format_exc())
+
+    def test_mathX(self):
+        """Given a tweet 'A+B'. Then the bot's answer should contain A+B"""
+        a = int(random.random()*100)
+        b = int(random.random()*100)
+        self.issue('The bot should be able to do maths with any integer',
+        """
+Given a tweet \"{0}+{1}\",
+Then the bot's answer should contain \"{2}\".
+
+### Hints
+* To split the term into operands, you can use [`myString.split('+')`](https://docs.python.org/2/library/stdtypes.html#str.split), where `myString` is a variable containing your string.
+* `split` returns an array, here is a small example
+  <pre>myString = "1+2"
+  arguments = myString.split('+')
+  print arguments[0] #(prints '1')
+  print arguments[1] #(prints '2')</pre>
+* To convert a  string to an integer, you can use [`int(myString)`](https://docs.python.org/2/library/functions.html#int).
+        """.format(a,b,a+b)
+        try:
+            response = self.reply_to(a + "+" + b)
+            self.expect_contains("response", response, ""+(a+b))
         except SystemExit:
             exit(1)
         except Exception as ex:
@@ -177,12 +224,10 @@ Then the bot's answer should contain \"YA RLY!\"".
 # Bulbasaur, Ivysaur, Venusaur, Charmander, Charmeleon, Charizard, Squirtle, Wartortle, Blastoise
 
     def test_pokemon1(self):
-        self.issue('The bot should know some Pokemon',
+        self.issue('The bot should know a Pokemon',
         """
 Given a tweet \"Which Pokemon is #1\",
 Then the bot's answer should contain \"Bulbasaur\".
-
-* It's enough if the bot knows Pokemon #1 to #9
         """)
         try:
             response = self.reply_to("Which Pokemon is #1")
@@ -193,7 +238,7 @@ Then the bot's answer should contain \"Bulbasaur\".
             self.expect_no_error(traceback.format_exc())
 
     def test_pokemon2(self):
-        self.issue('The bot should know Ivysaur',
+        self.issue('The bot should more Pokemon',
         """
 Given a tweet \"Which Pokemon is #2\",
 Then the bot's answer should contain \"Ivysaur\".
