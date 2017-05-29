@@ -157,7 +157,7 @@ Then the bot's answer should contain \"{2}\".
 * To convert a  string to an integer, you can use [`int(myString)`](https://docs.python.org/2/library/functions.html#int).
         """.format(a,b,a+b))
         try:
-            response = self.reply_to(str(a) + "+" + b)
+            response = self.reply_to("{0}+{1}".format(a,b))
             self.expect_contains("response", response, str(a+b))
         except SystemExit:
             exit(1)
